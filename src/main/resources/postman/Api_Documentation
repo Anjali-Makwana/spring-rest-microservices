@@ -1,0 +1,24 @@
+1. 
+
+curl --location 'http://localhost:8080/fx/EUR' 
+
+Response : 
+{
+    "id": 1,
+    "date": "2024-08-04",
+    "sourceCurrency": "USD",
+    "targetCurrency": "EUR",
+    "rate": 1.00
+}
+
+2. 
+
+curl --location 'http://localhost:8080/fx?targetCurrency=JPY'
+
+{
+    "id": 1,
+    "date": "2024-08-04",
+    "sourceCurrency": "USD",
+    "targetCurrency": "JPY",
+    "rate": 161.37
+}
