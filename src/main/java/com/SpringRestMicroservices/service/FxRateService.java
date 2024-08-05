@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import com.SpringRestMicroservices.entity.FxRate;
+import com.SpringRestMicroservices.exception.CustomNullPointerException;
 import com.SpringRestMicroservices.repository.FxRateRepository;
 
 @Service
@@ -86,7 +87,7 @@ public class FxRateService {
              }
              return fxRate;
         }else {
-        	return null;
+        	 throw new CustomNullPointerException("Response not found for currency: " + targetCurrency);
         }
        
     }

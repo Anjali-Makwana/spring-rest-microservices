@@ -26,20 +26,23 @@ public class SpringRestMicroservicesApplicationTests {
 
     @Autowired
     private FxRateRepository fxRateRepository;
+    
+    private static final String sourceCurrency = "USD";
+    private static final String targetCurrency = "EUR";
 
     @Test
     public void testGetRates() throws Exception {
         FxRate fxRate = new FxRate();
         fxRate.setDate(LocalDate.now());
-        fxRate.setSourceCurrency("USD");
-        fxRate.setTargetCurrency("EUR");
+        fxRate.setSourceCurrency(sourceCurrency);
+        fxRate.setTargetCurrency(targetCurrency);
         fxRate.setRate(BigDecimal.valueOf(0.85));
         fxRateRepository.save(fxRate);
 
         mockMvc.perform(get("/fx?targetCurrency=EUR"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.sourceCurrency").value("USD"))
-                .andExpect(jsonPath("$.targetCurrency").value("EUR"))
+                .andExpect(jsonPath("$.sourceCurrency").value(sourceCurrency))
+                .andExpect(jsonPath("$.targetCurrency").value(targetCurrency))
                 .andExpect(jsonPath("$.rate").value(0.85));
     }
 
@@ -47,14 +50,14 @@ public class SpringRestMicroservicesApplicationTests {
     public void testGetLatestRates() throws Exception {
         FxRate fxRate1 = new FxRate();
         fxRate1.setDate(LocalDate.now().minusDays(1));
-        fxRate1.setSourceCurrency("USD");
-        fxRate1.setTargetCurrency("EUR");
+        fxRate1.setSourceCurrency(sourceCurrency);
+        fxRate1.setTargetCurrency(targetCurrency);
         fxRate1.setRate(BigDecimal.valueOf(0.85));
 
         FxRate fxRate2 = new FxRate();
         fxRate2.setDate(LocalDate.now());
-        fxRate2.setSourceCurrency("USD");
-        fxRate2.setTargetCurrency("EUR");
+        fxRate2.setSourceCurrency(sourceCurrency);
+        fxRate2.setTargetCurrency(targetCurrency);
         fxRate2.setRate(BigDecimal.valueOf(0.86));
 
         fxRateRepository.saveAll(Arrays.asList(fxRate1, fxRate2));
