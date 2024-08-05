@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.data.domain.PageRequest;
@@ -27,14 +29,18 @@ public class FxRateService {
     @Autowired
     private RestTemplate restTemplate;
     
+    private static final Logger logger = LoggerFactory.getLogger(FxRateService.class);
+    
     private final String API_URL_LATEST = "https://api.frankfurter.app/latest";
     //private final String API_URL_DATE = "https://api.frankfurter.app/";
 
     public FxRate getExchangeRate(String targetCurrency) {
+    	logger.info("Fetching exchange rate for target currency: {}", targetCurrency);
         Optional<FxRate> existingExchangeRate = fxRateRepository.findFirstByTargetCurrencyOrderByDateDesc(targetCurrency);
         if (existingExchangeRate.isPresent()) {
             return existingExchangeRate.get();
         } else {
+        	logger.info("No rates found in database. Fetching from external API.");
             FxRate fxRate = fetchExchangeRateFromExternalAPI(targetCurrency);
             fxRateRepository.save(fxRate);
             return fxRate;
@@ -42,6 +48,9 @@ public class FxRateService {
     }
 
     private FxRate fetchExchangeRateFromExternalAPI(String targetCurrency) {
+    	
+    	logger.info("Fetching rate from external API for target currency: {}", targetCurrency);
+        
         //ResponseEntity<Map<String, Object>> response = restTemplate.getForEntity(apiUrl, Map.class);
         ResponseEntity<Map<String, Object>> response = restTemplate.exchange(
         	API_URL_LATEST,
@@ -83,6 +92,7 @@ public class FxRateService {
     }
 
     public List<FxRate> getLatestExchangeRates(String targetCurrency) {
+    	logger.debug("Fetching latest rates for target currency: {}", targetCurrency);
         Pageable pageable = PageRequest.of(0, 3);
         return fxRateRepository.findByTargetCurrencyOrderByDateDesc(targetCurrency, pageable);
     }
