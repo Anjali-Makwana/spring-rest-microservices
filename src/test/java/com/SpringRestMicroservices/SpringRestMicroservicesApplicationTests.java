@@ -4,7 +4,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Arrays;
 
@@ -36,7 +35,7 @@ public class SpringRestMicroservicesApplicationTests {
         fxRate.setDate(LocalDate.now());
         fxRate.setSourceCurrency(sourceCurrency);
         fxRate.setTargetCurrency(targetCurrency);
-        fxRate.setRate(BigDecimal.valueOf(0.85));
+        fxRate.setRate(0.85);
         fxRateRepository.save(fxRate);
 
         mockMvc.perform(get("/fx?targetCurrency=EUR"))
@@ -52,13 +51,13 @@ public class SpringRestMicroservicesApplicationTests {
         fxRate1.setDate(LocalDate.now().minusDays(1));
         fxRate1.setSourceCurrency(sourceCurrency);
         fxRate1.setTargetCurrency(targetCurrency);
-        fxRate1.setRate(BigDecimal.valueOf(0.85));
+        fxRate1.setRate(0.85);
 
         FxRate fxRate2 = new FxRate();
         fxRate2.setDate(LocalDate.now());
         fxRate2.setSourceCurrency(sourceCurrency);
         fxRate2.setTargetCurrency(targetCurrency);
-        fxRate2.setRate(BigDecimal.valueOf(0.86));
+        fxRate2.setRate(0.86);
 
         fxRateRepository.saveAll(Arrays.asList(fxRate1, fxRate2));
 

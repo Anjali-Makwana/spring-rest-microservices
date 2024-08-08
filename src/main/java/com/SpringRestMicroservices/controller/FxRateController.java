@@ -24,7 +24,7 @@ public class FxRateController {
     private static final Logger logger = LoggerFactory.getLogger(FxRateController.class);
 
     @GetMapping
-    public FxRate getExchangeRate(@RequestParam(required = false, defaultValue = "EUR") String targetCurrency) {
+    public List<FxRate> getExchangeRate(@RequestParam(required = false) String targetCurrency) {
     	logger.info("Request received to get exchange rate for target currency: {}", targetCurrency);
     	return fxRateService.getExchangeRate(targetCurrency);
     }

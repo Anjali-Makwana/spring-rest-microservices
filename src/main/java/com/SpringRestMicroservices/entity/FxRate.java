@@ -1,8 +1,8 @@
 package com.SpringRestMicroservices.entity;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -21,7 +21,10 @@ public class FxRate {
 
 	private LocalDate date;
 	private String sourceCurrency;
+	
+	@Column(length = 10)
 	private String targetCurrency;
-	private BigDecimal rate;
+	
+	private Double rate;
 
 }
